@@ -7,53 +7,51 @@ using namespace std;
 // } Driver Code Ends
 //User function template for C++
 
-class Solution {
+class Solution{
 public:
-    std::vector<int> findSum(std::vector<int>& a, std::vector<int>& b) {
-        // code here
-        
-          int n = a.size();
-        int m = b.size();
-        int carry = 0;
-        std::vector<int> result(max(n, m) + 1); // +1 for possible carry from the last addition
+	vector<int> findSum(vector<int> &a, vector<int> &b) {
+	    // Before proceeding further, make sure length
+	    // of b is larger.
+	    if (a.size() > b.size()) swap(a, b);
 
-        // Start from the end of both vectors
-        int i = n - 1;
-        int j = m - 1;
-        int k = result.size() - 1;
+	    // Take an empty vector for storing result
+	    vector<int> ans;
 
-        while (i >= 0 || j >= 0) {
-            int sum = carry;
-            if (i >= 0) {
-                sum += a[i];
-                i--;
-            }
-            if (j >= 0) {
-                sum += b[j];
-                j--;
-            }
+	    // Calculate length of both vector
+	    int n = a.size(), m = b.size();
 
-            // If sum is 10 or more, set carry
-            carry = sum / 10;
+	    // Reverse both of vector
+	    reverse(a.begin(), a.end());
+	    reverse(b.begin(), b.end());
 
-            // Store the last digit of sum in the result
-            result[k] = sum % 10;
-            k--;
-        }
+	    int carry = 0;
+	    for (int i = 0; i < n; i++) {
+	        // Do school mathematics, compute sum of
+	        // current digits and carry
+	        int sum = (a[i] + b[i] + carry);
+	        ans.push_back(sum % 10);
 
-        // If there is a carry left
-        if (carry > 0) {
-            result[0] = carry;
-        } else {
-            // If no carry is left, remove the first element
-            result.erase(result.begin());
-        }
+	        // Calculate carry for next step
+	        carry = sum / 10;
+	    }
 
-        return result;
-    }
+	    // Add remaining digits of larger number
+	    for (int i = n; i < m; i++) {
+	        int sum = (b[i] + carry);
+	        ans.push_back(sum % 10);
+	        carry = sum / 10;
+	    }
+
+	    // Add remaining carry
+	    if (carry) ans.push_back(carry);
+
+	    // reverse resultant vector
+	    reverse(ans.begin(), ans.end());
+
+	    return ans;
+	}
 
 };
-
 
         // std::string s = "", t = "";
 
